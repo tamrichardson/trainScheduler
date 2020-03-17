@@ -6,17 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tammy Richardson | Train Scheduler</title>
 
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="assets\css\style.css">
 
-    <link rel="stylesheet" href="C:\Users\Tammy.000\trainScheduler\assets\css\style.css">
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
+
+    <script src="assets\javaScript\schedule.js"></script>
+
 
 </head>
 
@@ -34,7 +42,7 @@
         </div>
     </div>
     <div class="container">
-        <table class="table table-striped">
+        <table id="trainTable" class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">Train Name</th>
@@ -89,7 +97,7 @@
                 <input type="text" class="form-control" id="frequency">
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" id="add-train-btn" class="btn btn-primary">Submit</button>
         </form>
     </div>
 
