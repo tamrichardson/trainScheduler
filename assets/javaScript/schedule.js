@@ -24,10 +24,12 @@ $(document).on("click", "#add-train-btn", function (event) {
     //grabs user input
     var trainName = $("#trainName").val().trim();
     var destination = $("#destination").val().trim();
-    var firstTrain = $("#firstTrain").val().trim();
     var frequency = $("#frequency").val().trim();
+    var firstTrain = $("#firstTrain").val().trim();
 
-    //  // Creates local "temporary" object for holding train data
+
+
+    // Creates local "temporary" object for holding train data
     var newTrain = {
         trainName: trainName,
         destination: destination,
@@ -38,18 +40,33 @@ $(document).on("click", "#add-train-btn", function (event) {
     // Uploads train data to the firebase database
     database.ref().push(newTrain);
 
+    //i need to grab the input for first train text box and link it to firstTime var
+    var firstTime = $(firstTrain)
+
+    var firstRunTime = moment(firstTime, "HH:mm").subtract(1, "years");
+    console.log(firstRunTime);
+
+    //current Time
+    var currentTime = moment();
+    console.log("Current Time: " + moment(currentTime).format("hh:mm"));
+
+    //differance between times
+    var diffTime = moment().diff(moment(firstRunTime), "minutes");
+    console.log("difference in minutes: " + diffTime);
+
+
     // Logs everything to console
     console.log(newTrain.trainName);
     console.log(newTrain.destination);
-    console.log(newTrain.firstTrain);
     console.log(newTrain.frequency);
-
+    console.log(newTrain.firstTrain);
 
     // Clears all of the text-boxes
     $("#trainName").val("");
     $("#destination").val("");
-    $("#firstTrain").val("");
     $("#frequency").val("");
+    $("#firstTrain").val("");
+
 });
 
 //  Create Firebase event for adding train to the database and a row in the html table when a user adds an entry
@@ -59,21 +76,25 @@ database.ref().on("child_added", function
     // Store everything into a variable.
     var newTr = childSnapshot.val().trainName;
     var newD = childSnapshot.val().destination;
-    var newF = childSnapshot.val().firstTrain;
     var newFq = childSnapshot.val().frequency;
+    var newF = childSnapshot.val().firstTrain;
+
 
     // train Info
     console.log(newTr);
     console.log(newD);
-    console.log(newF);
     console.log(newFq);
+    //console.log(newF);
+
 
     // Create the new row
     var newRow = $("<tr>").append(
         $("<td>").text(newTr),
         $("<td>").text(newD),
-        $("<td>").text(newF),
         $("<td>").text(newFq),
+        //$("<td>").text(newF),
+        //$("<td>").text(newArrival),
+        //$("<td>").text(minutesAway)
     );
 
     // Append the new row to the table
