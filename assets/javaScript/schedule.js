@@ -38,9 +38,6 @@ $(document).on("click", "#add-train-btn", function (event) {
     // Uploads train data to the firebase database
     database.ref().push(newTrain);
 
-
-
-
     // Logs everything to console
     console.log(newTrain.trainName);
     console.log(newTrain.destination);
@@ -65,9 +62,8 @@ database.ref().on("child_added", function
     var newFq = childSnapshot.val().frequency;
     var newF = childSnapshot.val().firstTrain;
 
-    //i need to grab the input for first train text box and link it to firstTime var
-    var firstTime = $(firstTrain)
-
+    //grab the value from firstTrain text box and link it to firstRunTime var. 
+    // firstTrain (pushed back 1 year to make sure it comes before current time)
     var firstRunTime = moment(childSnapshot.val().firstTrain, "HH:mm").subtract(1, "years");
     console.log(firstRunTime);
 
@@ -75,9 +71,15 @@ database.ref().on("child_added", function
     var currentTime = moment();
     console.log("Current Time: " + moment(currentTime).format("hh:mm"));
 
-    //differance between times
+    //difference between times
     var diffTime = moment().diff(moment(firstRunTime), "minutes");
     console.log("difference in minutes: " + diffTime);
+
+    //format frequency into minutes
+    frequency = moment(frequency).format("mm")
+
+    //time apart (remainder)
+    var timeRemaining = diffTime % frequency
 
     // train Info
     console.log(newTr);
