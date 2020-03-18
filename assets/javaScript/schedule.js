@@ -25,7 +25,7 @@ $(document).on("click", "#add-train-btn", function (event) {
     var trainName = $("#trainName").val().trim();
     var destination = $("#destination").val().trim();
     var frequency = $("#frequency").val().trim();
-    var firstTrain = $("#firstTrain").val().trim();
+    //var firstTrain = $("#firstTrain").val().trim();
 
     // Creates local "temporary" object for holding train data
     var newTrain = {
@@ -49,55 +49,50 @@ $(document).on("click", "#add-train-btn", function (event) {
     $("#destination").val("");
     $("#frequency").val("");
     $("#firstTrain").val("");
-
 });
 
 //  Create Firebase event for adding train to the database and a row in the html table when a user adds an entry
-database.ref().on("child_added", function
-    (childSnapshot) {
-
+database.ref().on('child_added', function (childSnapshot) {
     // Store everything into a variable.
     var newTr = childSnapshot.val().trainName;
     var newD = childSnapshot.val().destination;
     var newFq = childSnapshot.val().frequency;
     var newF = childSnapshot.val().firstTrain;
-
-    //grab the value from firstTrain text box and link it to firstRunTime var. 
+    //grab the value from firstTrain text box and link it to firstRunTime var.
     // firstTrain (pushed back 1 year to make sure it comes before current time)
-    var firstRunTime = moment(childSnapshot.val().firstTrain, "HH:mm").subtract(1, "years");
-    console.log(firstRunTime);
+    var firstRunTime = moment(newF, 'HH:mm').subtract(1, 'years');
+    console.log('first run time ' + firstRunTime);
 
     //current Time
     var currentTime = moment();
-    console.log("Current Time: " + moment(currentTime).format("hh:mm"));
-
+    console.log('Current Time: ' + moment(currentTime).format('hh:mm'));
     //difference between times
-    var diffTime = moment().diff(moment(firstRunTime), "minutes");
-    console.log("difference in minutes: " + diffTime);
 
-    //format frequency into minutes
-    frequency = moment(frequency).format("mm")
+    var diffTime = moment().diff(moment(firstRunTime), 'minutes');
+    console.log('difference in minutes: ' + diffTime);
 
     //time apart (remainder)
-    var timeRemaining = diffTime % frequency
+    var timeRemaining = diffTime % newFq;
+    console.log("timeRemaining " + timeRemaining);
 
-    // train Info
-    console.log(newTr);
-    console.log(newD);
-    console.log(newFq);
-    //console.log(newF);
+    // Minute Until Train
+    var tMinutesTillTrain = newFq - timeRemaining;
+    console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
+    // Next Train
+    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
     // Create the new row
-    var newRow = $("<tr>").append(
-        $("<td>").text(newTr),
-        $("<td>").text(newD),
-        $("<td>").text(newFq),
-        //$("<td>").text(newF),
-        //$("<td>").text(newArrival),
-        //$("<td>").text(minutesAway)
+    var newRow = $('<tr>').append(
+        $('<td>').text(newTr),
+        $('<td>').text(newD),
+        $('<td>').text(newFq),
+
+        $('<td>').text(nextTrain),
+        $('<td>').text(timeRemaining)
+
     );
-
     // Append the new row to the table
-    $("#trainTable > tbody").append(newRow);
-
-})
+    $('#trainTable > tbody').append(newRow);
+});
