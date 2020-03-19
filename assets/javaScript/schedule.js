@@ -25,7 +25,7 @@ $(document).on("click", "#add-train-btn", function (event) {
     var trainName = $("#trainName").val().trim();
     var destination = $("#destination").val().trim();
     var frequency = $("#frequency").val().trim();
-    //var firstTrain = $("#firstTrain").val().trim();
+    var firstTrain = $("#firstTrain").val().trim();
 
     // Creates local "temporary" object for holding train data
     var newTrain = {
@@ -89,7 +89,7 @@ database.ref().on('child_added', function (childSnapshot) {
         $('<td>').text(newD),
         $('<td>').text(newFq),
 
-        $('<td>').text(nextTrain),
+        $('<td>').text(moment(nextTrain).format('hh:mm')),
         $('<td>').text(timeRemaining)
 
     );
